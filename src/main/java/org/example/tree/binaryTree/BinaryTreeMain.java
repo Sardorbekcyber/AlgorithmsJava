@@ -3,7 +3,7 @@ package org.example.tree.binaryTree;
 public class BinaryTreeMain {
 
     public static void main(String[] args) {
-        BinaryTreeLL treeLL = new BinaryTreeLL();
+        BinaryTreeArr treeLL = new BinaryTreeArr(10);
         treeLL.insert("N1");
         treeLL.insert("N2");
         treeLL.insert("N3");
@@ -11,10 +11,9 @@ public class BinaryTreeMain {
         treeLL.insert("N5");
         treeLL.insert("N6");
 
-        treeLL.levelOrder();
-        treeLL.deleteDeepestNode();
+        treeLL.inOrder(1);
         System.out.println();
-        treeLL.levelOrder();
+        treeLL.preOrder(1);
     }
 
 }
