@@ -75,4 +75,63 @@ public class BinarySearchTree {
         }
     }
 
+    //Search value in BST
+    BSTNode search(BSTNode node, int value) {
+        if (node == null) {
+            System.out.println("Value " + value + " not found in BST");
+            return null;
+        } else if (node.value == value) {
+            System.out.println("Value " + value + " found in BST");
+            return node;
+        } else if (value < node.value) {
+            return search(node.left, value);
+        } else {
+            return search(node.right, value);
+        }
+    }
+
+    //Delete Node
+    public BSTNode deleteNode(BSTNode root, int value) {
+        if (root == null) {
+            System.out.println("The value " + value + " not found");
+            return null;
+        }
+        if (value < root.value) {
+            root.left = deleteNode(root.left, value);
+        } else if (value > root.value) {
+            root.right = deleteNode(root.right, value);
+        } else {
+            if (root.left != null && root.right != null) {
+                BSTNode temp = root;
+                BSTNode minimumNodeForRight = minimumNode(temp.right);
+                root.value = minimumNodeForRight.value;
+                root.right = deleteNode(root.right, minimumNodeForRight.value);
+            } else if (root.left != null) {
+                root = root.left;
+            } else if (root.right != null) {
+                root = root.right;
+            } else {
+                root = null;
+            }
+        }
+        return root;
+    }
+
+    //Minimum node
+    public static BSTNode minimumNode(BSTNode root) {
+        if (root.left == null) {
+            return root;
+        } else {
+            return minimumNode(root.left);
+        }
+    }
+
+    //Delete BST
+    public void deleteBST() {
+        root = null;
+        System.out.println("BST has been deleted successfully");
+    }
+
+
+
 }
