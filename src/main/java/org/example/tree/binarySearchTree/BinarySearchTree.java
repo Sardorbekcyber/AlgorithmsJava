@@ -132,6 +132,4 @@ public class BinarySearchTree {
         System.out.println("BST has been deleted successfully");
     }
 
-
-
 }
