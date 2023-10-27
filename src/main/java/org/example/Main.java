@@ -2,21 +2,18 @@ package org.example;
 
 import org.example.tree.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        // Press Opt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        String input = "AAABABB";
-
-        var result = solution(12);
-
-        System.out.println(Arrays.toString(result));
+        Map<Integer, Character> map = new HashMap<>();
+        int A = 64;
+        for (int i = 1; i < 27; i++) {
+            int num = A + i;
+            char ch = (char) num;
+            map.put(i, ch);
+            System.out.println(i + " to " + ch);
+        }
     }
 
     public static int[] solution(int area) {
@@ -28,19 +25,19 @@ public class Main {
             arr.add(max);
         }
         int[] res = new int[arr.size()];
-        for(int i=0; i<arr.size(); i++){
+        for (int i = 0; i < arr.size(); i++) {
             res[i] = arr.get(i);
         }
         return res;
     }
 
     public static int maxSquare(int number, int start, int end) {
-        int mid =  (start+end) / 2;
+        int mid = (start + end) / 2;
         int mid2 = mid * mid;
 
         if (end - start == 1 || start - end == 1) {
-            if ((mid+1)*(mid+1) <= number)
-                return (mid+1)*(mid+1);
+            if ((mid + 1) * (mid + 1) <= number)
+                return (mid + 1) * (mid + 1);
             else
                 return mid2;
         } else {
