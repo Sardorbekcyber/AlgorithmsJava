@@ -1,10 +1,10 @@
-package org.example.stack;
+package org.example.stack.array;
 
-public class Stack {
+public class StackArray {
     int[] arr;
     int topOfStack;
 
-    public Stack(int size) {
+    public StackArray(int size) {
         arr = new int[size];
         topOfStack = -1;
         System.out.println("The stack is created with size of: " + size);
