@@ -1,9 +1,10 @@
 package org.example.graph.matrix;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GraphAdjacencyMatrix {
-    ArrayList<GraphMatrixNode> nodeList = new ArrayList<>();
+    ArrayList<GraphMatrixNode> nodeList;
     int[][] adjacencyMatrix;
 
     public GraphAdjacencyMatrix(ArrayList<GraphMatrixNode> nodeList) {
@@ -15,6 +16,45 @@ public class GraphAdjacencyMatrix {
     public void addUndirectedEdge(int i, int j) {
         adjacencyMatrix[i][j] = 1;
         adjacencyMatrix[j][i] = 1;
+    }
+
+    public ArrayList<GraphMatrixNode> getNeighbours(GraphMatrixNode matrixNode) {
+        ArrayList<GraphMatrixNode> neighbours = new ArrayList<>();
+        int nodeIndex = matrixNode.index;
+        for (int i=0; i<adjacencyMatrix.length; i++) {
+            if (adjacencyMatrix[nodeIndex][i] == 1) {
+                neighbours.add(nodeList.get(i));
+            }
+        }
+
+        return neighbours;
+    }
+
+    //BFS internal
+    void bfsVisit(GraphMatrixNode matrixNode) {
+        LinkedList<GraphMatrixNode> queue = new LinkedList<>();
+        queue.add(matrixNode);
+
+        while(!queue.isEmpty()) {
+            GraphMatrixNode current = queue.poll();
+            current.isVisited = true;
+            System.out.print(current.name + " ");
+            ArrayList<GraphMatrixNode> neighbours = getNeighbours(current);
+            for (GraphMatrixNode neighbour: neighbours) {
+                if (!neighbour.isVisited) {
+                    queue.add(neighbour);
+                    neighbour.isVisited = true;
+                }
+            }
+        }
+    }
+
+    public void bfs() {
+        for (GraphMatrixNode node : nodeList) {
+            if (!node.isVisited) {
+                bfsVisit(node);
+            }
+        }
     }
 
     public String toString() {
@@ -52,6 +92,10 @@ public class GraphAdjacencyMatrix {
         graphAdjacencyMatrix.addUndirectedEdge(3, 4);
 
         System.out.println(graphAdjacencyMatrix);
+
+        graphAdjacencyMatrix.bfs();
+
+        System.out.println();
     }
 
 }

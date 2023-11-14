@@ -1,8 +1,8 @@
 package org.example.graph.list;
 
-import org.example.graph.matrix.GraphMatrixNode;
-
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class GraphAdjacencyList {
     public ArrayList<GraphListNode> nodeList;
@@ -17,6 +17,34 @@ public class GraphAdjacencyList {
 
         first.neighbors.add(second);
         second.neighbors.add(first);
+    }
+
+    //BFS internal
+    void bfs(GraphListNode listNode) {
+        Queue<GraphListNode> queue = new LinkedList<>();
+        queue.add(listNode);
+
+        while (!queue.isEmpty()) {
+            GraphListNode current = queue.poll();
+            current.isVisited = true;
+
+            System.out.print(current.name + " ");
+
+            for (GraphListNode neighbour : current.neighbors) {
+                if (!neighbour.isVisited) {
+                    queue.add(neighbour);
+                    neighbour.isVisited = true;
+                }
+            }
+        }
+    }
+
+    public void bfs() {
+        for (GraphListNode listNode : nodeList) {
+            if (!listNode.isVisited) {
+                bfs(listNode);
+            }
+        }
     }
 
     public String toString() {
@@ -45,14 +73,18 @@ public class GraphAdjacencyList {
         nodeList.add(new GraphListNode("E", 4));
 
         GraphAdjacencyList graph = new GraphAdjacencyList(nodeList);
-        graph.addUndirectedEdge(0,1);
-        graph.addUndirectedEdge(0,2);
-        graph.addUndirectedEdge(0,3);
-        graph.addUndirectedEdge(1,4);
-        graph.addUndirectedEdge(2,3);
-        graph.addUndirectedEdge(3,4);
+        graph.addUndirectedEdge(0, 1);
+        graph.addUndirectedEdge(0, 2);
+        graph.addUndirectedEdge(0, 3);
+        graph.addUndirectedEdge(1, 4);
+        graph.addUndirectedEdge(2, 3);
+        graph.addUndirectedEdge(3, 4);
 
         System.out.println(graph);
+
+        graph.bfs();
+
+        System.out.println();
     }
 
 }
