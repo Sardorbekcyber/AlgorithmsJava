@@ -2,6 +2,7 @@ package org.example.graph.matrix;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class GraphAdjacencyMatrix {
     ArrayList<GraphMatrixNode> nodeList;
@@ -21,7 +22,7 @@ public class GraphAdjacencyMatrix {
     public ArrayList<GraphMatrixNode> getNeighbours(GraphMatrixNode matrixNode) {
         ArrayList<GraphMatrixNode> neighbours = new ArrayList<>();
         int nodeIndex = matrixNode.index;
-        for (int i=0; i<adjacencyMatrix.length; i++) {
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
             if (adjacencyMatrix[nodeIndex][i] == 1) {
                 neighbours.add(nodeList.get(i));
             }
@@ -35,12 +36,12 @@ public class GraphAdjacencyMatrix {
         LinkedList<GraphMatrixNode> queue = new LinkedList<>();
         queue.add(matrixNode);
 
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             GraphMatrixNode current = queue.poll();
             current.isVisited = true;
             System.out.print(current.name + " ");
             ArrayList<GraphMatrixNode> neighbours = getNeighbours(current);
-            for (GraphMatrixNode neighbour: neighbours) {
+            for (GraphMatrixNode neighbour : neighbours) {
                 if (!neighbour.isVisited) {
                     queue.add(neighbour);
                     neighbour.isVisited = true;
@@ -53,6 +54,31 @@ public class GraphAdjacencyMatrix {
         for (GraphMatrixNode node : nodeList) {
             if (!node.isVisited) {
                 bfsVisit(node);
+            }
+        }
+    }
+
+    void dfsVisit(GraphMatrixNode node) {
+        Stack<GraphMatrixNode> stack = new Stack<>();
+        stack.push(node);
+        while (!stack.isEmpty()) {
+            GraphMatrixNode currentNode = stack.pop();
+            currentNode.isVisited = true;
+            System.out.print(currentNode.name + " ");
+            ArrayList<GraphMatrixNode> neighbours = getNeighbours(currentNode);
+            for (GraphMatrixNode neighbour : neighbours) {
+                if (!neighbour.isVisited) {
+                    stack.push(neighbour);
+                    neighbour.isVisited = true;
+                }
+            }
+        }
+    }
+
+    public void dfs() {
+        for (GraphMatrixNode node : nodeList) {
+            if (!node.isVisited) {
+                dfsVisit(node);
             }
         }
     }
@@ -93,7 +119,7 @@ public class GraphAdjacencyMatrix {
 
         System.out.println(graphAdjacencyMatrix);
 
-        graphAdjacencyMatrix.bfs();
+        graphAdjacencyMatrix.dfs();
 
         System.out.println();
     }

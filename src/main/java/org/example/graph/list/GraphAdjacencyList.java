@@ -3,6 +3,7 @@ package org.example.graph.list;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class GraphAdjacencyList {
     public ArrayList<GraphListNode> nodeList;
@@ -47,6 +48,32 @@ public class GraphAdjacencyList {
         }
     }
 
+    void dfsVisit(GraphListNode node) {
+        Stack<GraphListNode> stack = new Stack<>();
+        stack.push(node);
+
+        while (!stack.isEmpty()) {
+            GraphListNode currentNode = stack.pop();
+            currentNode.isVisited = true;
+            System.out.print(currentNode.name + " ");
+            for (GraphListNode neighbour : currentNode.neighbors) {
+                if (!neighbour.isVisited) {
+                    stack.push(neighbour);
+                    neighbour.isVisited = true;
+                }
+            }
+
+        }
+    }
+
+    public void dfs() {
+        for (GraphListNode graphNode : nodeList) {
+            if (!graphNode.isVisited) {
+                dfsVisit(graphNode);
+            }
+        }
+    }
+
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < nodeList.size(); i++) {
@@ -82,7 +109,7 @@ public class GraphAdjacencyList {
 
         System.out.println(graph);
 
-        graph.bfs();
+        graph.dfs();
 
         System.out.println();
     }
