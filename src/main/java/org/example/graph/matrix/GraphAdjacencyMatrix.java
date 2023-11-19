@@ -19,6 +19,10 @@ public class GraphAdjacencyMatrix {
         adjacencyMatrix[j][i] = 1;
     }
 
+    public void addDirectedEdge(int i, int j) {
+        adjacencyMatrix[i][j] = 1;
+    }
+
     public ArrayList<GraphMatrixNode> getNeighbours(GraphMatrixNode matrixNode) {
         ArrayList<GraphMatrixNode> neighbours = new ArrayList<>();
         int nodeIndex = matrixNode.index;
@@ -83,6 +87,31 @@ public class GraphAdjacencyMatrix {
         }
     }
 
+    void topologicalVisit(GraphMatrixNode node, Stack<GraphMatrixNode> stack) {
+        ArrayList<GraphMatrixNode> neighbours = getNeighbours(node);
+
+        for (GraphMatrixNode neighbour : neighbours) {
+            if (!neighbour.isVisited) {
+                topologicalVisit(neighbour, stack);
+            }
+        }
+        node.isVisited = true;
+        stack.push(node);
+    }
+
+    public void topologicalSort() {
+        Stack<GraphMatrixNode> stack = new Stack<>();
+
+        for (GraphMatrixNode node : nodeList) {
+            if (!node.isVisited) {
+                topologicalVisit(node, stack);
+            }
+        }
+        while (!stack.isEmpty()) {
+            System.out.print(stack.pop().name + " ");
+        }
+    }
+
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append("   ");
@@ -107,19 +136,25 @@ public class GraphAdjacencyMatrix {
         nodeList.add(new GraphMatrixNode("C", 2));
         nodeList.add(new GraphMatrixNode("D", 3));
         nodeList.add(new GraphMatrixNode("E", 4));
+        nodeList.add(new GraphMatrixNode("F", 5));
+        nodeList.add(new GraphMatrixNode("G", 6));
+        nodeList.add(new GraphMatrixNode("H", 7));
+
 
         GraphAdjacencyMatrix graphAdjacencyMatrix = new GraphAdjacencyMatrix(nodeList);
 
-        graphAdjacencyMatrix.addUndirectedEdge(0, 1);
-        graphAdjacencyMatrix.addUndirectedEdge(0, 2);
-        graphAdjacencyMatrix.addUndirectedEdge(0, 3);
-        graphAdjacencyMatrix.addUndirectedEdge(1, 4);
-        graphAdjacencyMatrix.addUndirectedEdge(2, 3);
-        graphAdjacencyMatrix.addUndirectedEdge(3, 4);
+        graphAdjacencyMatrix.addDirectedEdge(0, 2);
+        graphAdjacencyMatrix.addDirectedEdge(2, 4);
+        graphAdjacencyMatrix.addDirectedEdge(4, 7);
+        graphAdjacencyMatrix.addDirectedEdge(4, 5);
+        graphAdjacencyMatrix.addDirectedEdge(5, 6);
+        graphAdjacencyMatrix.addDirectedEdge(1, 2);
+        graphAdjacencyMatrix.addDirectedEdge(1, 3);
+        graphAdjacencyMatrix.addDirectedEdge(3, 5);
 
         System.out.println(graphAdjacencyMatrix);
 
-        graphAdjacencyMatrix.dfs();
+        graphAdjacencyMatrix.topologicalSort();
 
         System.out.println();
     }
