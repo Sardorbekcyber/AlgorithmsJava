@@ -103,6 +103,34 @@ public class GraphAdjacencyList {
         }
     }
 
+    //Single Source Shortest Path Problem
+    public void bfsForSingleSourceShortestPath(GraphListNode node) {
+        Queue<GraphListNode> queue = new LinkedList<>();
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            GraphListNode current = queue.poll();
+            current.isVisited = true;
+            System.out.print("Printing path for node " + current.name + ": ");
+            pathPrint(current);
+            System.out.println();
+            for (GraphListNode neighbour: current.neighbors) {
+                if (!neighbour.isVisited) {
+                    queue.add(neighbour);
+                    neighbour.isVisited = true;
+                    neighbour.parent = current;
+                }
+            }
+        }
+    }
+
+    public static void pathPrint(GraphListNode node) {
+        if (node.parent != null) {
+            pathPrint(node.parent);
+        }
+        System.out.print(node.name + " ");
+    }
+
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < nodeList.size(); i++) {
@@ -129,21 +157,21 @@ public class GraphAdjacencyList {
         nodeList.add(new GraphListNode("E", 4));
         nodeList.add(new GraphListNode("F", 5));
         nodeList.add(new GraphListNode("G", 6));
-        nodeList.add(new GraphListNode("H", 7));
 
         GraphAdjacencyList graph = new GraphAdjacencyList(nodeList);
-        graph.addDirectedEdge(0, 2);
-        graph.addDirectedEdge(2, 4);
-        graph.addDirectedEdge(4, 7);
-        graph.addDirectedEdge(4, 5);
-        graph.addDirectedEdge(5, 6);
-        graph.addDirectedEdge(1, 2);
-        graph.addDirectedEdge(1, 3);
-        graph.addDirectedEdge(3, 5);
+        graph.addUndirectedEdge(0, 1);
+        graph.addUndirectedEdge(0, 2);
+        graph.addUndirectedEdge(1, 3);
+        graph.addUndirectedEdge(1, 6);
+        graph.addUndirectedEdge(2, 3);
+        graph.addUndirectedEdge(2, 4);
+        graph.addUndirectedEdge(3, 5);
+        graph.addUndirectedEdge(4, 5);
+        graph.addUndirectedEdge(5, 6);
 
         System.out.println(graph);
 
-        graph.topologicalSort();
+        graph.bfsForSingleSourceShortestPath(nodeList.get(0));
 
         System.out.println();
     }

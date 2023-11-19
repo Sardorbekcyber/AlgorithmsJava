@@ -1,7 +1,11 @@
 package org.example.graph.matrix;
 
+import org.example.graph.list.GraphAdjacencyList;
+import org.example.graph.list.GraphListNode;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class GraphAdjacencyMatrix {
@@ -112,6 +116,35 @@ public class GraphAdjacencyMatrix {
         }
     }
 
+    //Single Source Shortest Path Problem
+    public void bfsForSingleSourceShortestPath(GraphMatrixNode node) {
+        Queue<GraphMatrixNode> queue = new LinkedList<>();
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            GraphMatrixNode current = queue.poll();
+            current.isVisited = true;
+            System.out.print("Printing path for ndoe " + current.name + ": ");
+            pathPrint(current);
+            System.out.println();
+            ArrayList<GraphMatrixNode> neighbours = getNeighbours(current);
+            for (GraphMatrixNode neighbour: neighbours) {
+                if (!neighbour.isVisited) {
+                    queue.add(neighbour);
+                    neighbour.isVisited = true;
+                    neighbour.parent = current;
+                }
+            }
+        }
+    }
+
+    public static void pathPrint(GraphMatrixNode node) {
+        if (node.parent != null) {
+            pathPrint(node.parent);
+        }
+        System.out.print(node.name + " ");
+    }
+
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append("   ");
@@ -131,6 +164,7 @@ public class GraphAdjacencyMatrix {
 
     public static void main(String[] args) {
         ArrayList<GraphMatrixNode> nodeList = new ArrayList<>();
+
         nodeList.add(new GraphMatrixNode("A", 0));
         nodeList.add(new GraphMatrixNode("B", 1));
         nodeList.add(new GraphMatrixNode("C", 2));
@@ -138,23 +172,21 @@ public class GraphAdjacencyMatrix {
         nodeList.add(new GraphMatrixNode("E", 4));
         nodeList.add(new GraphMatrixNode("F", 5));
         nodeList.add(new GraphMatrixNode("G", 6));
-        nodeList.add(new GraphMatrixNode("H", 7));
 
+        GraphAdjacencyMatrix graph = new GraphAdjacencyMatrix(nodeList);
+        graph.addUndirectedEdge(0, 1);
+        graph.addUndirectedEdge(0, 2);
+        graph.addUndirectedEdge(1, 3);
+        graph.addUndirectedEdge(1, 6);
+        graph.addUndirectedEdge(2, 3);
+        graph.addUndirectedEdge(2, 4);
+        graph.addUndirectedEdge(3, 5);
+        graph.addUndirectedEdge(4, 5);
+        graph.addUndirectedEdge(5, 6);
 
-        GraphAdjacencyMatrix graphAdjacencyMatrix = new GraphAdjacencyMatrix(nodeList);
+        System.out.println(graph);
 
-        graphAdjacencyMatrix.addDirectedEdge(0, 2);
-        graphAdjacencyMatrix.addDirectedEdge(2, 4);
-        graphAdjacencyMatrix.addDirectedEdge(4, 7);
-        graphAdjacencyMatrix.addDirectedEdge(4, 5);
-        graphAdjacencyMatrix.addDirectedEdge(5, 6);
-        graphAdjacencyMatrix.addDirectedEdge(1, 2);
-        graphAdjacencyMatrix.addDirectedEdge(1, 3);
-        graphAdjacencyMatrix.addDirectedEdge(3, 5);
-
-        System.out.println(graphAdjacencyMatrix);
-
-        graphAdjacencyMatrix.topologicalSort();
+        graph.bfsForSingleSourceShortestPath(nodeList.get(0));
 
         System.out.println();
     }
