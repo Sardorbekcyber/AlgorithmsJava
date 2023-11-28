@@ -39,10 +39,10 @@ public class WeightedGraph {
     //Bellman Ford Algorithm
     public void bellmanFord(WeightedNode sourceNode) {
         sourceNode.distance = 0;
-        for (int i=0; i<nodeList.size(); i++) {
-            for (WeightedNode currentNode: nodeList) {
-                for (WeightedNode neighbour: currentNode.neighbours) {
-                    if (neighbour.distance > currentNode.distance + currentNode.weighMap.get(neighbour)){
+        for (int i = 0; i < nodeList.size(); i++) {
+            for (WeightedNode currentNode : nodeList) {
+                for (WeightedNode neighbour : currentNode.neighbours) {
+                    if (neighbour.distance > currentNode.distance + currentNode.weighMap.get(neighbour)) {
                         neighbour.distance = currentNode.distance + currentNode.weighMap.get(neighbour);
                         neighbour.parent = currentNode;
                     }
@@ -50,9 +50,9 @@ public class WeightedGraph {
             }
         }
         System.out.println("Checking for Negative Cycle...");
-        for (WeightedNode currentNode: nodeList) {
-            for (WeightedNode neighbour: currentNode.neighbours) {
-                if (neighbour.distance > currentNode.distance + currentNode.weighMap.get(neighbour)){
+        for (WeightedNode currentNode : nodeList) {
+            for (WeightedNode neighbour : currentNode.neighbours) {
+                if (neighbour.distance > currentNode.distance + currentNode.weighMap.get(neighbour)) {
                     System.out.println("Negative cycle found: \n");
                     System.out.println("Vertex name: " + neighbour.name);
                     System.out.println("Old distance: " + neighbour.distance);
@@ -67,6 +67,43 @@ public class WeightedGraph {
         for (WeightedNode nodeToCheck : nodeList) {
             System.out.print("Node " + nodeToCheck + ", distance: " + nodeToCheck.distance + ", Path: ");
             pathPrint(nodeToCheck);
+            System.out.println();
+        }
+    }
+
+    //Floyd Warshall Algorithm
+    public void floydWarshall() {
+        int size = nodeList.size();
+        int[][] V = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            WeightedNode firstNode = nodeList.get(i);
+            for (int j = 0; j < size; j++) {
+                WeightedNode second = nodeList.get(j);
+                if (i == j) {
+                    V[i][j] = 0;
+                } else if (firstNode.weighMap.containsKey(second)) {
+                    V[i][j] = firstNode.weighMap.get(second);
+                } else {
+                    V[i][j] = Integer.MAX_VALUE / 10;
+                }
+            }
+        }
+
+        for (int k = 0; k < size; k++) {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (V[i][j] > V[i][k] + V[k][j]) {
+                        V[i][j] = V[i][k] + V[k][j];
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            System.out.print("Printing distance list for Node " + nodeList.get(i) + ": ");
+            for (int j = 0; j < size; j++) {
+                System.out.print(V[i][j] + " ");
+            }
             System.out.println();
         }
     }

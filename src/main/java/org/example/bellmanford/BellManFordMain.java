@@ -1,4 +1,7 @@
-package org.example.dijkstras;
+package org.example.bellmanford;
+
+import org.example.dijkstras.WeightedGraph;
+import org.example.dijkstras.WeightedNode;
 
 import java.util.ArrayList;
 
