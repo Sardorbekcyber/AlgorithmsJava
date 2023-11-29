@@ -70,6 +70,6 @@ public class BitManipulation {
         return x != 0 && ((x & (x - 1)) == 0);
     }
 
-
+    
 
 }
